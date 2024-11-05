@@ -51,6 +51,22 @@
     </div>
 
 
+    <div class="container mt-5 text-center">
+        <div class="row mx-5">
+            <div class="col-md-6 p-2" style="border: 1px solid;">
+                <h6>1st User Preview</h6>
+                <video id="1stUserPrev" ></video>
+                <button id="makeCall" class="btn btn-primary" >Make Call</button>
+            </div>
+
+            <div class="col-md-6 p-2" style="border: 1px solid;">
+                <h6>2nd User Preview</h6>
+                <video id="2ndUserPrev" ></video>
+            </div>
+        </div>
+    </div>
+
+
     <script>
 
         /// Genarate Peer ID
@@ -100,6 +116,31 @@
         }
 
 
+        let mediaConstrains = {'video': true, 'audio':true};
+        // Make call
+        $("#makeCall").on('click', function(){
+            navigator.mediaDevices.getUserMedia(mediaConstrains)
+            .then(function(stream){
+
+                // 2nd user Recever Prev
+                let firstUserPrev = document.getElementById('1stUserPrev');
+                firstUserPrev.srcObject = stream;
+                firstUserPrev.play();
+
+                let otherPeerID = $('#peerInput').val();
+                let call = peer.call(otherPeerID, stream);
+
+                call.on('stream',function(remoteStream){
+                    // 1st user Recever Prev
+                    let secUserPrev = document.getElementById('2ndUserPrev');
+                    secUserPrev.srcObject = remoteStream;
+                    secUserPrev.play();
+                })
+            })
+            .catch(function(err){
+                console.log(err);
+            })
+        })
     </script>
 
    
