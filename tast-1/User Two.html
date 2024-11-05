@@ -10,13 +10,13 @@
 </head>
 <body>
     <div class="container">
-        <div class="row m-3">
+        <div class="row m-5">
             <div class="col-md-12">
                 <h6>2nd User Peer ID : <strong id="peerID"></strong></h6>
 
                 <div class="row">
                     <div class="col-8">
-                        <input id="peerInput" class="form-control" type="text" placeholder="1st User Peer ID">
+                        <input id="peerInput" class="form-control" type="text" placeholder="Given 1st User Peer ID">
                     </div>
                     <div class="col">
                         <button class="btn btn-sm btn-primary px-5 py-2" onclick="connectionP2P()" id="connectID" >Connect</button> <br>
@@ -25,7 +25,24 @@
                 
                 <p>Connection Status : <strong id="connectStstus"></strong></p> <br>
 
-                <h2>Resived Massage : <span id="resivedMSG"></span></h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row mx-5">
+            <div class="col-md-12">
+
+                <p>Massage From 1st User: <span id="receivedMsg" ></span> </p>
+                <div class="row">
+                    <div class="col-8">
+                        <input id="msg" class="form-control" type="text" placeholder="Write somthing...">
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-sm btn-primary px-5 py-2" onclick="" id="sendMsg" >Send</button> <br>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -55,6 +72,7 @@
             othersConnection.on("open",function(){
                 connectStatus = true;
                 $('#connectStstus').html("Success");
+                resivedMassage()
             })
             if(connectStatus == false){
                 $('#connectStstus').html("Failed");
@@ -62,7 +80,27 @@
         }
 
 
-        
+        /// Send Massage From 2nd User
+        $('#sendMsg').on('click', function(){
+            
+            let otherPeerID = $('#peerInput').val();
+            let msg = $('#msg').val();
+
+            let conn = peer.connect(otherPeerID);
+            conn.on('open',function(){
+                conn.send(msg);
+            })
+        });
+
+
+        // Resived Massages
+        function resivedMassage(){
+            peer.on('connection', function(conn){
+                conn.on('data', function(msg){
+                    $('#receivedMsg').html(msg);
+                })
+            })
+        }
 
     </script>
    

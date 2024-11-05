@@ -14,22 +14,38 @@
 
 
     <div class="container">
-        <div class="row m-3">
+        <div class="row m-5">
             <div class="col-md-12">
                 <h6>1st User Peer ID : <strong id="peerID"></strong></h6>
 
                 <div class="row">
                     <div class="col-8">
-                        <input id="peerInput" class="form-control" type="text" placeholder="2nd User Peer ID">
+                        <input id="peerInput" class="form-control" type="text" placeholder="Given 2nd User Peer ID">
                     </div>
                     <div class="col">
                         <button class="btn btn-sm btn-primary px-5 py-2" onclick="connectionP2P()" id="connectID" >Connect</button> <br>
                     </div>
                 </div>
-                
                 <p>Connection Status : <strong id="connectStstus"></strong></p> <br>
+            </div>
+        </div>
+    </div>
 
-                <h2>Resived Massage : <span id="resivedMSG"></span></h2>
+
+    <div class="container mt-5">
+        <div class="row mx-5">
+            <div class="col-md-12">
+
+                <p>Massage From 2nd User: <span id="receivedMsg" ></span> </p>
+                <div class="row">
+                    <div class="col-8">
+                        <input id="msg" class="form-control" type="text" placeholder="Write somthing...">
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-sm btn-primary px-5 py-2" onclick="" id="sendMsg" >Send</button> <br>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -46,22 +62,41 @@
 
         /// Peer-to-Peer Connection 
         function connectionP2P(){
-
             let connectStatus = false;
-
             let otherPeerID = $('#peerInput').val();
 
             let othersConnection = peer.connect(otherPeerID);
             othersConnection.on("open",function(){
                 connectStatus = true;
                 $('#connectStstus').html("Success");
+                resivedMassage()
             })
             if(connectStatus == false){
                 $('#connectStstus').html("Failed");
             }
+        }
 
 
+        /// Send Massage From 2nd User
+        $('#sendMsg').on('click', function(){
+            
+            let otherPeerID = $('#peerInput').val();
+            let msg = $('#msg').val();
 
+            let conn = peer.connect(otherPeerID);
+            conn.on('open',function(){
+                conn.send(msg);
+            })
+        });
+
+
+        // Resived Massages
+        function resivedMassage(){
+            peer.on('connection', function(conn){
+                conn.on('data', function(msg){
+                    $('#receivedMsg').html(msg);
+                })
+            })
         }
 
 
