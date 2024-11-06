@@ -1,42 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>1st User</title>
+    <title>2nd User</title>
 
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <script src="../js/peerjs.min.js" ></script>
-    <script src="../js/jquery-3.6.0.min.js"></script>
-    <script src="../js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/peerjs.min.js" ></script>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
 
 </head>
 <body>
-
-
     <div class="container">
         <div class="row m-5">
             <div class="col-md-12">
-                <h6>1st User Peer ID : <strong id="peerID"></strong></h6>
+                <h6>2nd User Peer ID : <strong id="peerID"></strong></h6>
 
                 <div class="row">
                     <div class="col-8">
-                        <input id="peerInput" class="form-control" type="text" placeholder="Given 2nd User Peer ID">
+                        <input id="peerInput" class="form-control" type="text" placeholder="Given 1st User Peer ID">
                     </div>
                     <div class="col">
                         <button class="btn btn-sm btn-primary px-5 py-2" onclick="connectionP2P()" id="connectID" >Connect</button> <br>
                     </div>
                 </div>
+                
                 <p>Connection Status : <strong id="connectStstus"></strong></p> <br>
+
             </div>
         </div>
     </div>
-
 
     <div class="container mt-5">
         <div class="row mx-5">
             <div class="col-md-12">
 
-                <p>Massage From 2nd User: <span id="receivedMsg" ></span> </p>
+                <p>Massage From 1st User: <span id="receivedMsg" ></span> </p>
                 <div class="row">
                     <div class="col-8">
                         <input id="msg" class="form-control" type="text" placeholder="Write somthing...">
@@ -55,16 +54,19 @@
         <div class="row mx-5">
             <div class="col-md-6 p-2" style="border: 1px solid;">
                 <h6>1st User Preview</h6>
-                <video id="1stUserPrev" ></video>
-                <button id="makeCall" class="btn btn-primary" >Make Call</button>
+                <video id="1stUserPrev" class="w-100" ></video>
             </div>
 
             <div class="col-md-6 p-2" style="border: 1px solid;">
                 <h6>2nd User Preview</h6>
-                <video id="2ndUserPrev" ></video>
+                <video id="2ndUserPrev" class="w-100" ></video>
+                <button id="recevedCall" class="btn btn-primary" >Receved Call</button>
+
             </div>
         </div>
     </div>
+
+
 
 
     <script>
@@ -79,8 +81,9 @@
         /// Peer-to-Peer Connection 
         function connectionP2P(){
             let connectStatus = false;
-            let otherPeerID = $('#peerInput').val();
 
+            let otherPeerID = $('#peerInput').val();
+            
             let othersConnection = peer.connect(otherPeerID);
             othersConnection.on("open",function(){
                 connectStatus = true;
@@ -117,32 +120,34 @@
 
 
         let mediaConstrains = {'video': true, 'audio':true};
-        // Make call
-        $("#makeCall").on('click', function(){
-            navigator.mediaDevices.getUserMedia(mediaConstrains)
-            .then(function(stream){
+        // Call Resiver
+        $("#recevedCall").on('click', function(){
+            peer.on('call', function(call){
+                navigator.mediaDevices.getUserMedia(mediaConstrains)
+                .then(function(stream){
 
-                // 2nd user Recever Prev
-                let firstUserPrev = document.getElementById('1stUserPrev');
-                firstUserPrev.srcObject = stream;
-                firstUserPrev.play();
-
-                let otherPeerID = $('#peerInput').val();
-                let call = peer.call(otherPeerID, stream);
-
-                call.on('stream',function(remoteStream){
-                    // 1st user Recever Prev
-                    let secUserPrev = document.getElementById('2ndUserPrev');
-                    secUserPrev.srcObject = remoteStream;
+                    // 2nd user Recever Prev
+                    let secUserPrev =  document.getElementById('2ndUserPrev');
+                    secUserPrev.srcObject = stream;
                     secUserPrev.play();
+
+                    call.answer(stream);
+
+                    call.on('stream',function(remoteStream){
+                        // 1st user Recever Prev
+                        let firstUserPrev = document.getElementById('1stUserPrev');
+                        firstUserPrev.srcObject = remoteStream;
+                        firstUserPrev.play();
+                    })
+                })
+                .catch(function(err){
+                    console.log(err);
                 })
             })
-            .catch(function(err){
-                console.log(err);
-            })
         })
+        
     </script>
-
    
+
 </body>
 </html>
