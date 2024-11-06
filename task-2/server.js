@@ -14,34 +14,7 @@ io.on("connection", function(socket){
         console.log('Disconnected');
     });
 
-    /*
-    // Predefine Event
-    setInterval(function(){
-        let date = new Date();
-        let time = date.getTime();
-        socket.send(time);
-    },1000)
     
-
-    // Coustom Event
-    setInterval(function(){
-        let date = new Date();
-        let time = date.getTime();
-        socket.emit('sendMsgEvent', time);
-    },1000)
-
-    // Client to Server
-    socket.on('message', function(msg){
-        console.log(msg);
-        
-    })
-    
-    socket.on('sendMsgEvent', function(msg){
-        console.log(msg);
-        
-    })
-        */
-
     // Broadcasting
     io.sockets.emit('msgBroadcasting', 'Hello Everybody')
 

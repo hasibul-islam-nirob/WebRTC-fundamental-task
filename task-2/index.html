@@ -11,34 +11,8 @@
     
     <p id="showId" >Hello</p>
 
-    <!-- <input type="text" id="msg">
-    <button onclick="sendMsg()" >Send</button> -->
-
     <script>
-        //let socket = io('/admin');
         let socket = io();
-
-        // Predefine Event
-        /*
-        socket.on('message', function(msg){
-            document.getElementById('showId').innerHTML = '';
-            document.getElementById('showId').innerHTML = msg;
-        })*/
-
-        // Custom Event
-        /*
-        socket.on('sendMsgEvent', function(msg){
-            document.getElementById('showId').innerHTML = '';
-            document.getElementById('showId').innerHTML = msg;
-        })*/
-
-
-        /*
-        function sendMsg(){
-            let msg = document.getElementById('msg').value;
-            //socket.send(msg);
-            socket.emit('sendMsgEvent', msg);
-        }*/
 
         // Broadcasting
         socket.on('msgBroadcasting', function(data){
