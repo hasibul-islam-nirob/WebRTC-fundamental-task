@@ -1,5 +1,5 @@
 
-### Task 3
+### Task 3: Text chatting between users and Rooms
 
 ##### Features
 - Users can join specific chat rooms.
