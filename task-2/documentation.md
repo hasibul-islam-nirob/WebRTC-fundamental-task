@@ -1,4 +1,4 @@
-## Task 2
+## Task 2: Build a signaling server using Node.js and Socket.io for managing peer connection signaling between two users.
 
 
 #### Setup
