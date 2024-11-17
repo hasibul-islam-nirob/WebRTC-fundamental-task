@@ -1,6 +1,12 @@
 
 ### Task 3: Text chatting between users and Rooms
 
+#### Technology use
+- Node.js 
+- Express.js
+- Socket.oi
+- Html5,css3,bootstrap5, and javascript use for simple front view
+
 ##### Features
 - Users can join specific chat rooms.
 - Real-time messaging within chat rooms.
