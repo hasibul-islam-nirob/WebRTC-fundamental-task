@@ -1,5 +1,11 @@
 ## Task 2: Build a signaling server using Node.js and Socket.io for managing peer connection signaling between two users.
 
+#### Technology use
+- Node.js
+- Express.js
+- Socket.oi
+- Html5,css3,bootstrap5, and javascript use for simple front view
+
 
 #### Setup
 
